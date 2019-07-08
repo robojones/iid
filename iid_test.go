@@ -2,7 +2,9 @@ package iid
 
 import (
 	"encoding/binary"
+	"fmt"
 	"github.com/stretchr/testify/assert"
+	"log"
 	"testing"
 	"time"
 )
@@ -18,6 +20,11 @@ func TestNew(t *testing.T) {
 	assert.True(t, idTime <= after)
 }
 
+func ExampleNew() {
+	id := New()
+	fmt.Println(id)
+}
+
 func TestFromString(t *testing.T) {
 	ex := New()
 	s := enc.EncodeToString(ex)[:strLen]
@@ -28,6 +35,16 @@ func TestFromString(t *testing.T) {
 	assert.Equal(t, ex, id)
 }
 
+func ExampleFromString() {
+	str := "MHDSedbNhXB"
+	s, err := FromString(str)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(s.String())
+	// Output: MHDSedbNhXB
+}
+
 func TestFromUint64(t *testing.T) {
 	ex := New()
 	i := binary.BigEndian.Uint64(ex)
@@ -35,6 +52,14 @@ func TestFromUint64(t *testing.T) {
 	id := FromUint64(i)
 
 	assert.Equal(t, ex, id)
+}
+
+func ExampleFromUint64() {
+	var i uint64 = 6711382541547442289
+	id := FromUint64(i)
+
+	fmt.Println(id.Uint64())
+	// Output: 6711382541547442289
 }
 
 func TestIid_String(t *testing.T) {
