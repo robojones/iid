@@ -13,6 +13,7 @@ const (
 	strLen  = 11
 	offset  = 4
 	encoder = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
+	postfix = "="
 )
 
 var enc = base64.NewEncoding(encoder)
@@ -36,7 +37,7 @@ func New() Iid {
 
 // FromString imports an existing Iid from its base64url encoded string representation.
 func FromString(s string) (Iid, error) {
-	b, err := enc.DecodeString(s)
+	b, err := enc.DecodeString(s + postfix)
 
 	if err != nil || len(b) != iidLen {
 		return nil, errors.Wrapf(ErrInvalid, "parse id %s", s)

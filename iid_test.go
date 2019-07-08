@@ -20,7 +20,7 @@ func TestNew(t *testing.T) {
 
 func TestFromString(t *testing.T) {
 	ex := New()
-	s := enc.EncodeToString(ex)
+	s := enc.EncodeToString(ex)[:strLen]
 
 	id, err := FromString(s)
 
