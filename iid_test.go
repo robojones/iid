@@ -9,6 +9,13 @@ import (
 	"time"
 )
 
+func TestEncoding(t *testing.T) {
+	// Verify that the encoding is sortable.
+	for i := 1; i < len(encoder); i++ {
+		assert.True(t, encoder[i - 1] < encoder[i])
+	}
+}
+
 func TestNew(t *testing.T) {
 	before := time.Now().Unix()
 	id := New()
