@@ -1,3 +1,4 @@
+// Package iid generates small, globally unique IDs.
 package iid
 
 import (

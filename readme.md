@@ -1,5 +1,5 @@
 # iid
-Small globally unique IDs implemented in Go.
+Small, globally unique IDs implemented in Go.
 
 [![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square)](https://godoc.org/github.com/robojones/iid)
 [![CircleCI](https://circleci.com/gh/robojones/iid/tree/master.svg?style=svg)](https://circleci.com/gh/robojones/iid/tree/master)
