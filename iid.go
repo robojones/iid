@@ -19,19 +19,23 @@ const (
 
 var enc = base64.NewEncoding(encoder)
 
+var RandReader = rand.Reader
+
+var Timestamp = func() uint32 {
+	return uint32(time.Now().Unix())
+}
+
 // New generates a completely new Iid containing the current timestamp and four cryptographically secure random bytes.
 func New() Iid {
 	b := make([]byte, iidLen)
 
 	// Set the last four bytes to random values.
-	if _, err := rand.Read(b[offset:]); err != nil {
+	if _, err := RandReader.Read(b[offset:]); err != nil {
 		panic(errors.Wrap(err, "generate new iid"))
 	}
 
 	// Write current UNIX time in ms to the first four bytes.
-	now := time.Now()
-	s := uint32(now.Unix())
-	binary.BigEndian.PutUint32(b, s)
+	writeTime(b, Timestamp())
 
 	return Iid(b)
 }

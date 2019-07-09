@@ -8,14 +8,16 @@ Small, globally unique IDs implemented in Go.
 
 - Can be sorted by creation time
 - Globally unique
-- Small size (can be stored in a 64 bit unsigned integer or an 11 byte string)
+- Small size (can be stored in a 64 bit integer or an 11 byte string)
 - base64url encoded string format: the ids can be used in URLs
 
 ## ID Format
 
-| 4 Byte               | 4 Byte                                |
-| -------------------- | ------------------------------------- |
-| Timestamp in seconds | Cryptographically secure random bytes |
+| 1 Bit    | 32 Bit               | 31 Bit                                |
+| -------- | -------------------- | ------------------------------------- |
+| Not used | Timestamp in seconds | Cryptographically secure random bytes |
+
+The first bit is not used so the ID fits into 64 bit signed integers.
 
 ## Usage Example
 

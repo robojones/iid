@@ -5,9 +5,27 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"log"
+	"os"
 	"testing"
-	"time"
 )
+
+const fixedTime uint32 = 1562658708
+
+type mockReader struct {}
+func (*mockReader) Read(b []byte) (n int, e error) {
+	return len(b), nil
+}
+
+func TestMain(m *testing.M) {
+	// Mock all inputs.
+	RandReader = &mockReader{}
+	Timestamp = func () uint32 {
+		return fixedTime
+	}
+
+	os.Exit(m.Run())
+}
+
 
 func TestEncoding(t *testing.T) {
 	// Verify that the encoding is sortable.
@@ -17,19 +35,16 @@ func TestEncoding(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	before := time.Now().Unix()
 	id := New()
-	after := time.Now().Unix()
-
-	idTime := int64(binary.BigEndian.Uint32(id))
-
-	assert.True(t, idTime >= before)
-	assert.True(t, idTime <= after)
+	idTime := binary.BigEndian.Uint32(id)
+	assert.True(t, idTime == (fixedTime >> 1))
 }
 
 func ExampleNew() {
 	id := New()
 	fmt.Println(id)
+
+	// Output: Ad7YmV-----
 }
 
 func TestFromString(t *testing.T) {
