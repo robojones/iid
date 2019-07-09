@@ -31,7 +31,7 @@ func New() Iid {
 	// Write current UNIX time in ms to the first four bytes.
 	now := time.Now()
 	s := uint32(now.Unix())
-	binary.BigEndian.PutUint32(b, s)
+	writeTime(b, s)
 
 	return Iid(b)
 }

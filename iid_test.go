@@ -17,9 +17,9 @@ func TestEncoding(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	before := time.Now().Unix()
+	before := time.Now().Unix() >> 1
 	id := New()
-	after := time.Now().Unix()
+	after := time.Now().Unix() >> 1
 
 	idTime := int64(binary.BigEndian.Uint32(id))
 
