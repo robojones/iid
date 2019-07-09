@@ -7,7 +7,6 @@ import (
 
 func TestWrite(t *testing.T) {
 	var b uint8 = 0xFF
-
 	buf := make([]byte, 5)
 	writeTime(buf, 0xFFFFFFFF)
 
