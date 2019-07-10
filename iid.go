@@ -60,6 +60,11 @@ func FromUint64(i uint64) (Iid) {
 	return Iid(b)
 }
 
+// FromInt imports an existing Iid from its int64 representation.
+func FromInt(i int64) (Iid) {
+	return FromUint64(uint64(i))
+}
+
 // Iid represents time sortable ID which can be exported as a base64url encoded string or uint64.
 type Iid []byte
 
@@ -71,4 +76,9 @@ func (i Iid) String() string {
 // Uint64 returns a uint64 representing the Iid.
 func (i Iid) Uint64() uint64 {
 	return binary.BigEndian.Uint64(i)
+}
+
+// Int returns a int64 representing the Iid.
+func (i Iid) Int() int64 {
+	return int64(i.Uint64())
 }

@@ -84,6 +84,23 @@ func ExampleFromUint64() {
 	// Output: 6711382541547442289
 }
 
+func TestFromInt(t *testing.T) {
+	ex := New()
+	i := int64(binary.BigEndian.Uint64(ex))
+
+	id := FromInt(i)
+
+	assert.Equal(t, ex, id)
+}
+
+func ExampleFromInt() {
+	var i int64 = 6711382541547442289
+	id := FromInt(i)
+
+	fmt.Println(id.Int())
+	// Output: 6711382541547442289
+}
+
 func TestIid_String(t *testing.T) {
 	ex := New()
 
@@ -100,5 +117,14 @@ func TestIid_Uint64(t *testing.T) {
 	i := ex.Uint64()
 
 	id := FromUint64(i)
+	assert.Equal(t, ex, id)
+}
+
+func TestIid_Int(t *testing.T) {
+	ex := New()
+
+	i := ex.Int()
+
+	id := FromInt(i)
 	assert.Equal(t, ex, id)
 }
