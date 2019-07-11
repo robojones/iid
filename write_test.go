@@ -1,18 +1,22 @@
 package iid
 
 import (
+	"encoding/binary"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestWrite(t *testing.T) {
-	var b uint8 = 0xFF
-	buf := make([]byte, 5)
-	writeTime(buf, 0xFFFFFFFF)
+func TestWriteTime(t *testing.T) {
+	var time uint32 = 1
 
-	assert.Equal(t, b >> 1, buf[0])
-	assert.Equal(t, b, buf[1])
-	assert.Equal(t, b, buf[2])
-	assert.Equal(t, b, buf[3])
-	assert.Equal(t, b << 7, buf[4])
+	for time > 0 {
+		buf := make([]byte, 8)
+		writeTime(buf, time)
+
+		i := binary.BigEndian.Uint64(buf)
+		assert.Equal(t, uint64(time), i >> (32 - dateOffset))
+
+		time = time << 1
+	}
+
 }

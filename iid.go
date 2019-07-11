@@ -10,11 +10,11 @@ import (
 )
 
 const (
-	iidLen  = 8
-	strLen  = 11
-	offset  = 4
-	encoder = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
-	postfix = "="
+	iidLen    = 8
+	strLen    = 11
+	randIndex = 4
+	encoder   = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
+	postfix   = "="
 )
 
 var enc = base64.NewEncoding(encoder)
@@ -30,7 +30,7 @@ func New() Iid {
 	b := make([]byte, iidLen)
 
 	// Set the last four bytes to random values.
-	if _, err := RandReader.Read(b[offset:]); err != nil {
+	if _, err := RandReader.Read(b[randIndex:]); err != nil {
 		panic(errors.Wrap(err, "generate new iid"))
 	}
 
