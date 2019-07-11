@@ -25,7 +25,10 @@ var Timestamp = func() uint32 {
 	return uint32(time.Now().Unix())
 }
 
-// New generates a completely new Iid containing the current timestamp and four cryptographically secure random bytes.
+// New generates a completely new Iid containing:
+// 1 bit empty,
+// 32 bit current timestamp,
+// 31 bit cryptographically secure random bits.
 func New() Iid {
 	b := make([]byte, iidLen)
 
@@ -65,10 +68,10 @@ func FromInt(i int64) (Iid) {
 	return FromUint64(uint64(i))
 }
 
-// Iid represents time sortable ID which can be exported as a base64url encoded string or uint64.
+// Iid represents time sortable ID which can be exported as a base64url encoded string, int64 or uint64.
 type Iid []byte
 
-// String returns an 11 character/byte long string representing the Iid.
+// String returns an 11 byte long, base64url encoded string representing the Iid.
 func (i Iid) String() string {
 	return enc.EncodeToString(i)[:strLen]
 }
