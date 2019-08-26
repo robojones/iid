@@ -10,17 +10,27 @@ import (
 )
 
 const (
-	iidLen    = 8
-	strLen    = 11
+	// IidLen is the length of the byte slice used for the Iid type.
+	IidLen = 8
+	// StrLen is the length of iid string representations in bytes.
+	StrLen    = 11
+	// randIndex is the index of the first byte which is initialized with random values during the creation of iids.
+	// All following bytes are also initialized with random values.
 	randIndex = 4
+	// encoder is the base64 URL encoding used for the string serialization of iids.
 	encoder   = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
+	// postfix is the character which needs to be appended to iid string
+	// representations so they can be parsed by the encoding in Enc.
 	postfix   = "="
 )
 
-var enc = base64.NewEncoding(encoder)
+// The encoding used for string serialization and deserialization of iids.
+var Enc = base64.NewEncoding(encoder)
 
+// RandReader is used to fill the 31 least significant bits of new iids with random values.
 var RandReader = rand.Reader
 
+// Timestamp is used to get the current UNIX time in seconds when generating new iids.
 var Timestamp = func() uint32 {
 	return uint32(time.Now().Unix())
 }
@@ -30,14 +40,13 @@ var Timestamp = func() uint32 {
 // 32 bit current timestamp,
 // 31 bit cryptographically secure random bits.
 func New() Iid {
-	b := make([]byte, iidLen)
+	b := make([]byte, IidLen)
 
 	// Set the last four bytes to random values.
 	if _, err := RandReader.Read(b[randIndex:]); err != nil {
 		panic(errors.Wrap(err, "generate new iid"))
 	}
 
-	// Write current UNIX time in ms to the first four bytes.
 	writeTime(b, Timestamp())
 
 	return Iid(b)
@@ -45,9 +54,9 @@ func New() Iid {
 
 // FromString imports an existing Iid from its base64url encoded string representation.
 func FromString(s string) (Iid, error) {
-	b, err := enc.DecodeString(s + postfix)
+	b, err := Enc.DecodeString(s + postfix)
 
-	if err != nil || len(b) != iidLen {
+	if err != nil || len(b) != IidLen {
 		return nil, errors.Wrapf(ErrInvalid, "parse id %s", s)
 	}
 
@@ -56,7 +65,7 @@ func FromString(s string) (Iid, error) {
 
 // FromUint64 imports an existing Iid from its uint64 representation.
 func FromUint64(i uint64) (Iid) {
-	b := make([]byte, iidLen)
+	b := make([]byte, IidLen)
 
 	binary.BigEndian.PutUint64(b, i)
 
@@ -73,7 +82,7 @@ type Iid []byte
 
 // String returns an 11 byte long, base64url encoded string representing the Iid.
 func (i Iid) String() string {
-	return enc.EncodeToString(i)[:strLen]
+	return Enc.EncodeToString(i)[:StrLen]
 }
 
 // Uint64 returns a uint64 representing the Iid.
