@@ -49,7 +49,7 @@ func ExampleNew() {
 
 func TestFromString(t *testing.T) {
 	ex := New()
-	s := enc.EncodeToString(ex)[:strLen]
+	s := Enc.EncodeToString(ex)[:StrLen]
 
 	id, err := FromString(s)
 
