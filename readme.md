@@ -2,7 +2,6 @@
 Small, globally unique IDs implemented in Go.
 
 [![GoDoc](https://godoc.org/github.com/robojones/iid?status.svg)](https://godoc.org/github.com/robojones/iid)
-[![CircleCI](https://circleci.com/gh/robojones/iid/tree/master.svg?style=svg)](https://circleci.com/gh/robojones/iid/tree/master)
 
 ## Features
 
